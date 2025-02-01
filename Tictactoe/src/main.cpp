@@ -3,27 +3,26 @@
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_video.h>
 
+#include <SDL3/SDL_init.h>
 
 int main()
 {
-	SDL_Window* window = nullptr;
-	SDL_Renderer* renderer = nullptr;
+	const char* title = "Tictactoe";
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+	SDL_Window* window = SDL_CreateWindow(title, 1280, 720, SDL_WINDOW_ALWAYS_ON_TOP);
+	if (!window) {
+		std::cout << "Failed to create a window! Error: " << SDL_GetError << '\n';
+	}
+	SDL_Surface* winSurface = SDL_GetWindowSurface(window);
 
-	SDL_Init(SDL_INIT_VIDEO);
-	SDL_Init(SDL_INIT_EVENTS);
+	// do drawing
+	Uint32 color = SDL_MapRGB(*SDL_PixelFormatDetails::format, NULL, 255, 90, 120);
+	SDL_FillSurfaceRect(winSurface, NULL, color);
 
-	SDL_CreateWindowAndRenderer("Tictactoe", 640, 480, SDL_WINDOW_MOUSE_CAPTURE, &window, &renderer);
-	//SDL_Surface(SDL_LoadBMP());
-	//SDL_SetWindowIcon();               (SDL_LoadBMP(“”), NULL);
-	SDL_SetRenderScale(renderer, 4, 4);
-
-	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 0);
-	SDL_RenderClear(renderer);
-
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	//SDL_RenderPoint(renderer, 640.0 / 2, 480.0 / 2);
-	SDL_RenderPresent(renderer);
-	SDL_Delay(20000);
-
-	return 0;
+	SDL_UpdateWindowSurface(window);
+	SDL_Delay(10000);
+	SDL_DestroyWindow(window);
+	window = NULL;
+	winSurface = NULL;
+	SDL_Quit();
 }
