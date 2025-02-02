@@ -1,12 +1,19 @@
 #include <iostream>
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
+#include <string>
+
+constexpr int screen_width = 1000;
+constexpr int screen_height = 700;
 
 
 
-int main(int argc, char** args){
-	SDL_Window* window = NULL;
-	SDL_Surface* winSurface = NULL;
-	SDL_Renderer* renderer = nullptr;
+
+
+int main(int argc, char** args) {
+	SDL_Window* window{ nullptr };
+	SDL_Surface* winSurface{ nullptr };
+	SDL_Renderer* renderer{ nullptr };
 
 
 
@@ -25,7 +32,7 @@ int main(int argc, char** args){
 		system("PAUSE");
 		return 1;
 	}
-	window = SDL_CreateWindow(title, 1280, 720, SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow(title, screen_width, screen_height, SDL_WINDOW_RESIZABLE);
 	if (!window) {
 		std::cout << "Failed to create a window! Error: " << SDL_GetError << '\n';
 		system("PAUSE");
