@@ -1,10 +1,11 @@
 #include <iostream>
 #include <SDL3/SDL.h>
 
+
+
 int main(int argc, char** args){
 	SDL_Window* window = NULL;
 	SDL_Surface* winSurface = NULL;
-
 	const char* title = "Tictactoe";
 
 	Uint8 r = 255;  
@@ -14,7 +15,7 @@ int main(int argc, char** args){
 
 	Uint32 color = (r << 24) | (g << 16) | (b << 8) | a;
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
 	{
 		std::cout << "Failed to initialize SDL" << SDL_GetError() << '\n';
 		system("PAUSE");
@@ -36,9 +37,9 @@ int main(int argc, char** args){
 
 	// do drawing
 	SDL_FillSurfaceRect(winSurface, NULL, color);
-
 	SDL_UpdateWindowSurface(window);
 	system("PAUSE");
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+	return 0;	
 }
