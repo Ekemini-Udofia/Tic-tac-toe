@@ -28,20 +28,20 @@ int main(int argc, char** args) {
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
 	{
-		std::cout << "Failed to initialize SDL" << SDL_GetError() << '\n';
+		SDL_Log( "Failed to initialize SDL: %s\n", SDL_GetError() );
 		system("PAUSE");
 		return 1;
 	}
 	window = SDL_CreateWindow(title, screen_width, screen_height, SDL_WINDOW_RESIZABLE);
 	if (!window) {
-		std::cout << "Failed to create a window! Error: " << SDL_GetError << '\n';
+		SDL_Log( "Failed to create a window! Error: %s\n", SDL_GetError() );
 		system("PAUSE");
 		return 1;
 	}
 	winSurface = SDL_GetWindowSurface(window);
 	if (!winSurface)
 	{
-		std::cout << "Failed to initialize the Windows Surface" << SDL_GetError() << '\n';
+		SDL_Log( "Failed to initialize the Windows Surface: %s\n", SDL_GetError() );
 		system("PAUSE");
 		return 1;
 	}
