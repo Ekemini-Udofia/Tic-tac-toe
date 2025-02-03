@@ -60,10 +60,8 @@ int main(int argc, char** args) {
 				running = false;
 			}
 		}
-		SDL_FRect rectangle{ 10, 10, 20, 250 };
 
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderFillRect(renderer, &rectangle);
 
 		SDL_RenderPresent(renderer);
 
