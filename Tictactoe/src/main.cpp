@@ -2,6 +2,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <string>
+#include <SDL3_image/SDL_image.h>
 
 constexpr int screen_width = 1000;
 constexpr int screen_height = 700;
@@ -10,6 +11,7 @@ SDL_Window* window{ nullptr };
 SDL_Surface* winSurface{ nullptr };
 SDL_Renderer* renderer{ nullptr };
 SDL_Surface* Test_surface{ nullptr };
+Ltexture tic_Button;
 
 
 
@@ -22,8 +24,95 @@ Uint8 a = 255;
 
 Uint32 color = (r << 24) | (g << 16) | (b << 8) | a;
 
+class Ltexture {
+	public:
+		Ltexture();
+
+		~Ltexture();
+
+		bool loadFromFile(std::string path);
+
+		void destroy();;
+
+		void renderscreen(float x, float y);
+
+		int getWidth();
+
+		int getHeight();
+
+	private:
+		SDL_Texture* mTexture;
+
+		int mWidth;
+
+		int mHeight;
+
+};
 
 
+Ltexture::Ltexture()
+{
+	mTexture = nullptr;
+	mWidth = 0;
+	mHeight = 0;
+}
+
+Ltexture::~Ltexture()
+{
+	destroy();
+}
+
+bool Ltexture::loadFromFile(std::string path)
+{
+	destroy();
+
+	if (SDL_Surface* loadedSurface = IMG_Load(path.c_str()); loadedSurface == nullptr)
+	{
+		SDL_Log("Unable to load image %s! SDL_image error: %s\n", path.c_str(), SDL_GetError());
+	}
+	else
+	{
+		if (mTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface); mTexture == nullptr)
+		{
+			SDL_Log("Unable to create texture from loaded pixels! SDL error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			mWidth = loadedSurface->w;
+			mHeight = loadedSurface->h;
+		}
+
+		SDL_DestroySurface(loadedSurface);
+	}
+
+	return mTexture != nullptr;
+}
+
+
+void Ltexture::destroy()
+{
+	SDL_DestroyTexture(mTexture);
+	mTexture = nullptr;
+	mWidth = 0;
+	mHeight = 0;
+}
+
+void Ltexture::renderscreen(float x, float y)
+{
+	SDL_FRect dstRect = { x, y, static_cast<float>(mWidth), static_cast<float>(mHeight) };
+
+	SDL_RenderTexture(renderer, mTexture, nullptr, &dstRect);
+}
+
+int Ltexture::getWidth()
+{
+	return mWidth;
+}
+
+int Ltexture::getHeight()
+{
+	return mHeight;
+}
 
 bool init()
 {
@@ -35,7 +124,7 @@ bool init()
 	}
 	else
 	{
-		if (( window = SDL_CreateWindow(title, screen_width, screen_height, 0 )) == nullptr) 
+		if (!SDL_CreateWindowAndRenderer(title, screen_width, screen_height, 0, &window, &renderer)) 
 		{
 			SDL_Log("Failed to create a window! Error: %s\n", SDL_GetError());
 			success = false;
@@ -43,9 +132,14 @@ bool init()
 		else
 		{
 			winSurface = SDL_GetWindowSurface(window);
-
-
+			int imgFlags = IMG_INIT_PNG;
+			if (!(IMG_Init(imgFlags) & imgFlags))
+				{
+					SDL_Log("SDL_image could not initialize! SDL_image error: %s\n", SDL_GetError());
+					success = false;
+				}
 		}
+
 	}
 	return success;
 
@@ -60,7 +154,29 @@ bool load_media()
 		SDL_Log("Failed to load image. SDL Error: %s\n", imagepath.c_str(), SDL_GetError());
 		success = false;
 	}
+	else
+	{
+		if (!tic_Button.loadFromFile("App_Resources/SDL3_New_Game_Button.png"))
+		{
+			SDL_Log("Unable to load png image!\n");
+		}
+
+		
+	}
 	return success;
+}
+
+void close()
+{
+	tic_Button.destroy();
+
+	SDL_DestroyRenderer(renderer);
+	renderer = nullptr;
+	SDL_DestroyWindow(window);
+	window = nullptr;
+
+	IMG_Quit();
+	SDL_Quit();
 }
 
 void Destroy_Window()
@@ -94,21 +210,36 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			bool quit{ false };
-			SDL_Event e;
-			SDL_zero(e);
-			while (!quit)
+			if (!load_media())
 			{
-				while (SDL_PollEvent(&e) != 0)
+				SDL_Log("Unable to load media!\n");
+				exitcode = 2;
+			}
+			else
+			{
+				bool quit{ false };
+				SDL_Event e;
+				SDL_zero(e);
+				while (!quit)
 				{
-					if (e.type == SDL_EVENT_QUIT)
+					while (SDL_PollEvent(&e) != 0)
 					{
-						quit = true;
+						if (e.type == SDL_EVENT_QUIT)
+						{
+							quit = true;
+						}
 					}
+					SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+					SDL_RenderClear(renderer);
+
+					tic_Button.render(0.f, 0.f);
+
+					SDL_RenderPresent(renderer);
+
+					SDL_FillSurfaceRect(winSurface, nullptr, color);
+					SDL_BlitSurface(Test_surface, nullptr, winSurface, nullptr);
+					SDL_UpdateWindowSurface(window);
 				}
-				SDL_FillSurfaceRect(winSurface, nullptr, color);
-				SDL_BlitSurface(Test_surface, nullptr, winSurface, nullptr);
-				SDL_UpdateWindowSurface(window);
 			}
 
 		}
