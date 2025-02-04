@@ -1,6 +1,9 @@
 #include <iostream>
+#include <stdio.h>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+
+#include <SDL3/SDL_video.h>
 #include <string>
 #include <SDL3_image/SDL_image.h>
 
@@ -11,7 +14,8 @@ SDL_Window* window{ nullptr };
 SDL_Surface* winSurface{ nullptr };
 SDL_Renderer* renderer{ nullptr };
 SDL_Surface* Test_surface{ nullptr };
-Ltexture tic_Button;
+//Ltexture tic_Button;
+
 
 
 
@@ -25,6 +29,13 @@ Uint8 a = 255;
 Uint32 color = (r << 24) | (g << 16) | (b << 8) | a;
 
 class Ltexture {
+	
+	private:
+		SDL_Texture* mTexture;
+
+		int mWidth;
+
+		int mHeight;
 	public:
 		Ltexture();
 
@@ -39,14 +50,6 @@ class Ltexture {
 		int getWidth();
 
 		int getHeight();
-
-	private:
-		SDL_Texture* mTexture;
-
-		int mWidth;
-
-		int mHeight;
-
 };
 
 
@@ -66,13 +69,15 @@ bool Ltexture::loadFromFile(std::string path)
 {
 	destroy();
 
-	if (SDL_Surface* loadedSurface = IMG_Load(path.c_str()); loadedSurface == nullptr)
+	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+	if (loadedSurface == nullptr)
 	{
 		SDL_Log("Unable to load image %s! SDL_image error: %s\n", path.c_str(), SDL_GetError());
 	}
 	else
 	{
-		if (mTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface); mTexture == nullptr)
+		mTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+		if (mTexture == nullptr)
 		{
 			SDL_Log("Unable to create texture from loaded pixels! SDL error: %s\n", SDL_GetError());
 		}
@@ -132,12 +137,13 @@ bool init()
 		else
 		{
 			winSurface = SDL_GetWindowSurface(window);
-			int imgFlags = IMG_INIT_PNG;
-			if (!(IMG_Init(imgFlags) & imgFlags))
+			/*int flags = IMG_INIT_JPG | IMG_INIT_PNG;
+			int innitialize_img = IMG_Init(flags);
+			if (!(innitialize_img & flags))
 				{
 					SDL_Log("SDL_image could not initialize! SDL_image error: %s\n", SDL_GetError());
 					success = false;
-				}
+				}*/
 		}
 
 	}
@@ -156,10 +162,10 @@ bool load_media()
 	}
 	else
 	{
-		if (!tic_Button.loadFromFile("App_Resources/SDL3_New_Game_Button.png"))
+		/*if (!tic_Button.loadFromFile("App_Resources/SDL3_New_Game_Button.png"))
 		{
 			SDL_Log("Unable to load png image!\n");
-		}
+		}*/
 
 		
 	}
@@ -168,14 +174,14 @@ bool load_media()
 
 void close()
 {
-	tic_Button.destroy();
+	//tic_Button.destroy();
 
 	SDL_DestroyRenderer(renderer);
 	renderer = nullptr;
 	SDL_DestroyWindow(window);
 	window = nullptr;
 
-	IMG_Quit();
+	//IMG_Quit();
 	SDL_Quit();
 }
 
@@ -232,7 +238,7 @@ int main(int argc, char* argv[])
 					SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 					SDL_RenderClear(renderer);
 
-					tic_Button.render(0.f, 0.f);
+					//tic_Button.render(0.f, 0.f);
 
 					SDL_RenderPresent(renderer);
 
