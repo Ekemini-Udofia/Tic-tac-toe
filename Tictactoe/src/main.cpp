@@ -3,10 +3,9 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-#include <SDL3/SDL_video.h>
+#include <SDL3/SDL_image.h>
 #include <string>
 #include <SDL3_image/SDL_image.h>
-
 constexpr int screen_width = 1000;
 constexpr int screen_height = 700;
 
@@ -29,27 +28,27 @@ Uint8 a = 255;
 Uint32 color = (r << 24) | (g << 16) | (b << 8) | a;
 
 class Ltexture {
-	
-	private:
-		SDL_Texture* mTexture;
 
-		int mWidth;
+private:
+	SDL_Texture* mTexture;
 
-		int mHeight;
-	public:
-		Ltexture();
+	int mWidth;
 
-		~Ltexture();
+	int mHeight;
+public:
+	Ltexture();
 
-		bool loadFromFile(std::string path);
+	~Ltexture();
 
-		void destroy();;
+	bool loadFromFile(std::string path);
 
-		void renderscreen(float x, float y);
+	void destroy();;
 
-		int getWidth();
+	void renderscreen(float x, float y);
 
-		int getHeight();
+	int getWidth();
+
+	int getHeight();
 };
 
 
@@ -122,14 +121,14 @@ int Ltexture::getHeight()
 bool init()
 {
 	bool success{ true };
-	if (!SDL_Init(SDL_INIT_VIDEO) )
+	if (!SDL_Init(SDL_INIT_VIDEO))
 	{
 		SDL_Log("Failed to initialize SDL. SDL Error %s\n", SDL_GetError());
 		success = false;
 	}
 	else
 	{
-		if (!SDL_CreateWindowAndRenderer(title, screen_width, screen_height, 0, &window, &renderer)) 
+		if (!SDL_CreateWindowAndRenderer(title, screen_width, screen_height, 0, &window, &renderer))
 		{
 			SDL_Log("Failed to create a window! Error: %s\n", SDL_GetError());
 			success = false;
@@ -140,10 +139,10 @@ bool init()
 			/*int flags = IMG_INIT_JPG | IMG_INIT_PNG;
 			int innitialize_img = IMG_Init(flags);
 			if (!(innitialize_img & flags))
-				{
-					SDL_Log("SDL_image could not initialize! SDL_image error: %s\n", SDL_GetError());
-					success = false;
-				}*/
+			{
+				SDL_Log("SDL_image could not initialize! SDL_image error: %s\n", SDL_GetError());
+				success = false;
+			}*/
 		}
 
 	}
@@ -167,7 +166,7 @@ bool load_media()
 			SDL_Log("Unable to load png image!\n");
 		}*/
 
-		
+
 	}
 	return success;
 }
@@ -187,7 +186,7 @@ void close()
 
 void Destroy_Window()
 {
-	
+
 	SDL_DestroySurface(winSurface);
 	winSurface = nullptr;
 	SDL_DestroySurface(Test_surface);
