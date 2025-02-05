@@ -11,7 +11,6 @@ SDL_Window* window{ nullptr };
 SDL_Surface* winSurface{ nullptr };
 SDL_Renderer* renderer{ nullptr };
 SDL_Surface* Test_surface{ nullptr };
-Ltexture tic_Button;
 
 
 
@@ -115,6 +114,10 @@ int Ltexture::getHeight()
 {
 	return mHeight;
 }
+
+
+Ltexture tic_Button;
+
 
 bool init()
 {
@@ -235,7 +238,7 @@ int main(int argc, char* argv[])
 					SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 					SDL_RenderClear(renderer);
 
-					tic_Button.render(0.f, 0.f);
+					tic_Button.renderscreen(0.f, 0.f);
 
 					SDL_RenderPresent(renderer);
 
