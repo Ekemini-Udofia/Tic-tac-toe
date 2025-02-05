@@ -11,7 +11,7 @@ SDL_Window* window{ nullptr };
 SDL_Surface* winSurface{ nullptr };
 SDL_Renderer* renderer{ nullptr };
 SDL_Surface* Test_surface{ nullptr };
-//Ltexture tic_Button;
+Ltexture tic_Button;
 
 
 
@@ -159,10 +159,10 @@ bool load_media()
 	}
 	else
 	{
-		/*if (!tic_Button.loadFromFile("App_Resources/SDL3_New_Game_Button.png"))
+		if (!tic_Button.loadFromFile("App_Resources/SDL3_New_Game_Button.png"))
 		{
 			SDL_Log("Unable to load png image!\n");
-		}*/
+		}
 
 
 	}
@@ -171,7 +171,7 @@ bool load_media()
 
 void close()
 {
-	//tic_Button.destroy();
+	tic_Button.destroy();
 
 	SDL_DestroyRenderer(renderer);
 	renderer = nullptr;
@@ -235,7 +235,7 @@ int main(int argc, char* argv[])
 					SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 					SDL_RenderClear(renderer);
 
-					//tic_Button.render(0.f, 0.f);
+					tic_Button.render(0.f, 0.f);
 
 					SDL_RenderPresent(renderer);
 
