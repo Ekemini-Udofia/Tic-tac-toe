@@ -238,7 +238,7 @@ int main(int argc, char* argv[])
 					SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 					SDL_RenderClear(renderer);
 
-					tic_Button.renderscreen(0.f, 0.f);
+					tic_Button.renderscreen(2.3, 0.f);
 
 					SDL_RenderPresent(renderer);
 
