@@ -137,13 +137,13 @@ bool init()
 		else
 		{
 			winSurface = SDL_GetWindowSurface(window);
-			/*int flags = IMG_INIT_JPG | IMG_INIT_PNG;
+			int flags = IMG_INIT_JPG | IMG_INIT_PNG;
 			int innitialize_img = IMG_Init(flags);
 			if (!(innitialize_img & flags))
 			{
 				SDL_Log("SDL_image could not initialize! SDL_image error: %s\n", SDL_GetError());
 				success = false;
-			}*/
+			}
 		}
 
 	}
