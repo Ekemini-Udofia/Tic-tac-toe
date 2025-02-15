@@ -117,6 +117,7 @@ int Ltexture::getHeight()
 
 
 Ltexture tic_Button;
+Ltexture blank_button, x_button, o_button, exit_button;
 
 
 bool init()
@@ -137,13 +138,6 @@ bool init()
 		else
 		{
 			winSurface = SDL_GetWindowSurface(window);
-			int flags = IMG_INIT_JPG | IMG_INIT_PNG;
-			int innitialize_img = IMG_Init(flags);
-			if (!(innitialize_img & flags))
-			{
-				SDL_Log("SDL_image could not initialize! SDL_image error: %s\n", SDL_GetError());
-				success = false;
-			}
 		}
 
 	}
@@ -151,26 +145,36 @@ bool init()
 
 }
 
-bool load_media()
+bool loadMedia()
 {
+	//File loading flag
 	bool success{ true };
-	std::string imagepath{ "App_Resources/app.bmp" };
-	if ((Test_surface = SDL_LoadBMP(imagepath.c_str())) == nullptr)
-	{
-		SDL_Log("Failed to load image. SDL Error: %s\n", imagepath.c_str(), SDL_GetError());
-		success = false;
-	}
-	else
-	{
-		if (!tic_Button.loadFromFile("App_Resources/SDL3_New_Game_Button.png"))
-		{
-			SDL_Log("Unable to load png image!\n");
-		}
 
-
+	//Load directional images
+	if (!blank_button.loadFromFile("App_Resources/SDL3_Buttons.png"))
+	{
+		SDL_Log("Unable to load up image!\n");
 	}
+	if (!x_button.loadFromFile("App_Resources/SDL3_O_Button.png"))
+	{
+		SDL_Log("Unable to load down image!\n");
+	}
+	if (!o_button.loadFromFile("App_Resources/SDL3_X_Button.png"))
+	{
+		SDL_Log("Unable to load left image!\n");
+	}
+	if (!exit_button.loadFromFile("App_Resources/SDL3_Exit_Button.png"))
+	{
+		SDL_Log("Unable to load right image!\n");
+	}
+	if (!tic_Button.loadFromFile("App_Resources/SDL3_New_Game_Button.png"))
+	{
+		SDL_Log("Unable to load blank image!\n");
+	}
+
 	return success;
 }
+
 
 void close()
 {
@@ -209,14 +213,14 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		if (!load_media())
+		if (!loadMedia())
 		{
-			SDL_Log("Failed to load media. SDL Error %s\n");
+			SDL_Log("Failed to load media. SDL Error %s\n", SDL_GetError());
 			exitcode = 2;
 		}
 		else
 		{
-			if (!load_media())
+			if (!loadMedia())
 			{
 				SDL_Log("Unable to load media!\n");
 				exitcode = 2;
@@ -226,6 +230,8 @@ int main(int argc, char* argv[])
 				bool quit{ false };
 				SDL_Event e;
 				SDL_zero(e);
+				Ltexture* currentTexture = &blank_button;
+				SDL_Color bgColor = { 0xFF, 0xFF, 0xFF, 0xFF };
 				while (!quit)
 				{
 					while (SDL_PollEvent(&e) != 0)
@@ -234,9 +240,37 @@ int main(int argc, char* argv[])
 						{
 							quit = true;
 						}
+						else if (e.type == SDL_EVENT_KEY_DOWN)
+						{
+							//Set texture
+							if (e.key.key == SDLK_1)
+							{
+								currentTexture = &blank_button;
+							}
+							else if (e.key.key == SDLK_2)
+							{
+								currentTexture = &x_button;
+							}
+							else if (e.key.key == SDLK_3)
+							{
+								currentTexture = &x_button;
+							}
+							else if (e.key.key == SDLK_4)
+							{
+								currentTexture = &exit_button;
+							}
+						}
+
 					}
-					SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+					
+					SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 0xFF);
 					SDL_RenderClear(renderer);
+
+					//Render image on screen
+					currentTexture->renderscreen((screen_width- currentTexture->getWidth()) / 2.f, (screen_height - currentTexture->getHeight()) / 2.f);
+
+					//Update screen
+					SDL_RenderPresent(renderer);
 
 					tic_Button.renderscreen(2.3, 0.f);
 
