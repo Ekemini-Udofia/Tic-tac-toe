@@ -231,6 +231,10 @@ int main(int argc, char* argv[])
 				SDL_Event e;
 				SDL_zero(e);
 				Ltexture* currentTexture = &blank_button;
+				Ltexture* x_texture = &x_button;
+				Ltexture* o_texture = &o_button;
+				Ltexture* exit_texture = &exit_button;
+
 				SDL_Color bgColor = { 0xFF, 0xFF, 0xFF, 0xFF };
 				while (!quit)
 				{
@@ -240,26 +244,26 @@ int main(int argc, char* argv[])
 						{
 							quit = true;
 						}
-						else if (e.type == SDL_EVENT_KEY_DOWN)
-						{
-							//Set texture
-							if (e.key.key == SDLK_1)
-							{
-								currentTexture = &blank_button;
-							}
-							else if (e.key.key == SDLK_2)
-							{
-								currentTexture = &x_button;
-							}
-							else if (e.key.key == SDLK_3)
-							{
-								currentTexture = &x_button;
-							}
-							else if (e.key.key == SDLK_4)
-							{
-								currentTexture = &exit_button;
-							}
-						}
+						//else if (e.type == SDL_EVENT_KEY_DOWN)
+						//{
+						//	//Set texture
+						//	if (e.key.key == SDLK_1)
+						//	{
+						//		currentTexture = &blank_button;
+						//	}
+						//	else if (e.key.key == SDLK_2)
+						//	{
+						//		currentTexture = &x_button;
+						//	}
+						//	else if (e.key.key == SDLK_3)
+						//	{
+						//		currentTexture = &o_button;
+						//	}
+						//	else if (e.key.key == SDLK_4)
+						//	{
+						//		currentTexture = &exit_button;
+						//	}
+						//}
 
 					}
 					
@@ -267,13 +271,16 @@ int main(int argc, char* argv[])
 					SDL_RenderClear(renderer);
 
 					//Render image on screen
-					currentTexture->renderscreen((screen_width- currentTexture->getWidth()) / 2.f, (screen_height - currentTexture->getHeight()) / 2.f);
+					currentTexture->renderscreen((screen_width - currentTexture->getWidth()) / 2.f, (screen_height - currentTexture->getHeight()) / 2.f);
+					//x_texture->renderscreen((screen_width - x_texture->getWidth()) / 2.f, (screen_height - x_texture->getHeight()) / 2.f);
+					o_texture->renderscreen((screen_width - o_texture->getWidth()) / 2.f, (screen_height - o_texture->getHeight()) / 2.f);
+					//exit_texture->renderscreen((screen_width - exit_texture->getWidth()) / 2.f, (screen_height - exit_texture->getHeight()) / 2.f);
 
 					//Update screen
 					SDL_RenderPresent(renderer);
 
-					tic_Button.renderscreen(2.3, 0.f);
-
+					//tic_Button.renderscreen(0.0, 5.0);
+		
 					SDL_RenderPresent(renderer);
 
 					SDL_FillSurfaceRect(winSurface, nullptr, color);
