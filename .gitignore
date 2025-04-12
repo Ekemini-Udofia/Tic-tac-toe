@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/packages.config
+/Tictactoe.sln
+/Tictactoe.vcxproj
+/Tictactoe.vcxproj.filters
