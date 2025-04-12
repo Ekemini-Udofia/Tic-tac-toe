@@ -266,7 +266,7 @@ int main(int argc, char* argv[])
 						//}
 
 					}
-					
+
 					SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 0xFF);
 					SDL_RenderClear(renderer);
 
@@ -280,7 +280,7 @@ int main(int argc, char* argv[])
 					SDL_RenderPresent(renderer);
 
 					//tic_Button.renderscreen(0.0, 5.0);
-		
+
 					SDL_RenderPresent(renderer);
 
 					SDL_FillSurfaceRect(winSurface, nullptr, color);
