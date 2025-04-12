@@ -153,23 +153,23 @@ bool loadMedia()
 	bool success{ true };
 
 	//Load directional images
-	if (!blank_button.loadFromFile("App_Resources/SDL3_Buttons.png"))
+	if (!blank_button.loadFromFile("res/SDL3_Buttons.png"))
 	{
 		SDL_Log("Unable to load up image!\n");
 	}
-	if (!x_button.loadFromFile("App_Resources/SDL3_O_Button.png"))
+	if (!x_button.loadFromFile("res/SDL3_O_Button.png"))
 	{
 		SDL_Log("Unable to load down image!\n");
 	}
-	if (!o_button.loadFromFile("App_Resources/SDL3_X_Button.png"))
+	if (!o_button.loadFromFile("res/SDL3_X_Button.png"))
 	{
 		SDL_Log("Unable to load left image!\n");
 	}
-	if (!exit_button.loadFromFile("App_Resources/SDL3_Exit_Button.png"))
+	if (!exit_button.loadFromFile("res/SDL3_Exit_Button.png"))
 	{
 		SDL_Log("Unable to load right image!\n");
 	}
-	if (!tic_Button.loadFromFile("App_Resources/SDL3_New_Game_Button.png"))
+	if (!tic_Button.loadFromFile("res/SDL3_New_Game_Button.png"))
 	{
 		SDL_Log("Unable to load blank image!\n");
 	}
