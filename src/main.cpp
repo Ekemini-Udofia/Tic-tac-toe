@@ -35,87 +35,73 @@ private:
 
 	int mHeight;
 public:
-	Ltexture();
-
-	~Ltexture();
-
-	bool loadFromFile(std::string path);
-
-	void destroy();;
-
-	void renderscreen(float x, float y);
-
-	int getWidth();
-
-	int getHeight();
-};
-
-
-Ltexture::Ltexture()
-{
-	mTexture = nullptr;
-	mWidth = 0;
-	mHeight = 0;
-}
-
-Ltexture::~Ltexture()
-{
-	destroy();
-}
-
-bool Ltexture::loadFromFile(std::string path)
-{
-	destroy();
-
-	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
-	if (loadedSurface == nullptr)
+	Ltexture()
 	{
-		SDL_Log("Unable to load image %s! SDL_image error: %s\n", path.c_str(), SDL_GetError());
+		mTexture = nullptr;
+		mWidth = 0;
+		mHeight = 0;
 	}
-	else
+
+	~Ltexture()
 	{
-		mTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
-		if (mTexture == nullptr)
+		destroy();
+	}
+
+	bool loadFromFile(std::string path)
+	{
+		destroy();
+
+		SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+		if (loadedSurface == nullptr)
 		{
-			SDL_Log("Unable to create texture from loaded pixels! SDL error: %s\n", SDL_GetError());
+			SDL_Log("Unable to load image %s! SDL_image error: %s\n", path.c_str(), SDL_GetError());
 		}
 		else
 		{
-			mWidth = loadedSurface->w;
-			mHeight = loadedSurface->h;
+			mTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+			if (mTexture == nullptr)
+			{
+				SDL_Log("Unable to create texture from loaded pixels! SDL error: %s\n", SDL_GetError());
+			}
+			else
+			{
+				mWidth = loadedSurface->w;
+				mHeight = loadedSurface->h;
+			}
+
+			SDL_DestroySurface(loadedSurface);
 		}
 
-		SDL_DestroySurface(loadedSurface);
+		return mTexture != nullptr;
 	}
 
-	return mTexture != nullptr;
-}
+	void destroy()
+	{
+		SDL_DestroyTexture(mTexture);
+		mTexture = nullptr;
+		mWidth = 0;
+		mHeight = 0;
+	}
 
+	void renderscreen(float x, float y)
+	{
+		SDL_FRect dstRect = { x, y, static_cast<float>(mWidth), static_cast<float>(mHeight) };
 
-void Ltexture::destroy()
-{
-	SDL_DestroyTexture(mTexture);
-	mTexture = nullptr;
-	mWidth = 0;
-	mHeight = 0;
-}
+		SDL_RenderTexture(renderer, mTexture, nullptr, &dstRect);
+	}
 
-void Ltexture::renderscreen(float x, float y)
-{
-	SDL_FRect dstRect = { x, y, static_cast<float>(mWidth), static_cast<float>(mHeight) };
+	int getWidth()
+	{
+		return mWidth;
+	}
 
-	SDL_RenderTexture(renderer, mTexture, nullptr, &dstRect);
-}
+	int getHeight()
+	{
+		return mHeight;
 
-int Ltexture::getWidth()
-{
-	return mWidth;
-}
+	}
+};
 
-int Ltexture::getHeight()
-{
-	return mHeight;
-}
 
 
 Ltexture tic_Button;
@@ -297,4 +283,5 @@ int main(int argc, char* argv[])
 	Destroy_Window();
 	return exitcode;
 }
+
 
