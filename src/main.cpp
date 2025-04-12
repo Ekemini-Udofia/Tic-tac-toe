@@ -1,9 +1,11 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-
 #include <string>
 #include <SDL3_image/SDL_image.h>
+
+
+//sets the screen dimensions
 constexpr int screen_width = 1000;
 constexpr int screen_height = 700;
 
