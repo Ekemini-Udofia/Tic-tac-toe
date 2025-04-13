@@ -6,8 +6,8 @@
 
 
 //sets the screen dimensions 
-constexpr int screen_width = 1000;
-constexpr int screen_height = 700;
+constexpr int screen_width = 670;
+constexpr int screen_height = 480;
 
 SDL_Window* window{ nullptr };
 SDL_Surface* winSurface{ nullptr };
@@ -102,11 +102,7 @@ public:
 	}
 };
 
-
-
-Ltexture tic_Button;
-Ltexture blank_button, x_button, o_button, exit_button;
-
+Ltexture new_game_button, online_button, exit_button, turn_label, x_button, o_button, blank_button;
 
 bool init()
 {
@@ -139,6 +135,22 @@ bool loadMedia()
 	bool success{ true };
 
 	//Load directional images
+	if (!new_game_button.loadFromFile("src\\gui\\assets\\SDL3_New_Game_Button.png"))
+	{
+		SDL_Log("Unable to load blank image!\n");
+	}
+	if (!online_button.loadFromFile("src\\gui\\assets\\SDL3_Online_Button.png"))
+	{
+		SDL_Log("Unable to load blank image!\n");
+	}
+	if (!exit_button.loadFromFile("src\\gui\\assets\\SDL3_Exit_Button.png"))
+	{
+		SDL_Log("Unable to load right image!\n");
+	}
+	if (!turn_label.loadFromFile("src\\gui\\assets\\SDL3_Turn_Label.png"))
+	{
+		SDL_Log("Unable to load right image!\n");
+	}
 	if (!blank_button.loadFromFile("src\\gui\\assets\\SDL3_Buttons.png"))
 	{
 		SDL_Log("Unable to load up image!\n");
@@ -151,22 +163,16 @@ bool loadMedia()
 	{
 		SDL_Log("Unable to load left image!\n");
 	}
-	if (!exit_button.loadFromFile("src\\gui\\assets\\SDL3_Exit_Button.png"))
-	{
-		SDL_Log("Unable to load right image!\n");
-	}
-	if (!tic_Button.loadFromFile("src\\gui\\assets\\SDL3_New_Game_Button.png"))
-	{
-		SDL_Log("Unable to load blank image!\n");
-	}
+	
+	
 
 	return success;
 }
 
-
+/*
 void close()
 {
-	tic_Button.destroy();
+	//tic_Button.destroy();
 
 	SDL_DestroyRenderer(renderer);
 	renderer = nullptr;
@@ -176,6 +182,7 @@ void close()
 	//IMG_Quit();
 	SDL_Quit();
 }
+*/
 
 void Destroy_Window()
 {
@@ -208,110 +215,134 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			if (!loadMedia())
-			{
-				SDL_Log("Unable to load media!\n");
-				exitcode = 2;
-			}
-			else
-			{
-				bool quit{ false };
-				SDL_Event e;
-				SDL_zero(e);
-				Ltexture* currentTexture = &blank_button;
-				Ltexture* x_texture = &x_button;
-				Ltexture* o_texture = &o_button;
-				Ltexture* exit_texture = &exit_button;
-				Ltexture* tic_texture = &tic_Button;
+			bool quit{ false };
+			SDL_Event e;
+			SDL_zero(e);
 
-				SDL_Color bgColor = { 0xFF, 0xFF, 0xFF, 0xFF };
-				while (!quit)
+			//defining textures
+
+			Ltexture* new_game_texture = &new_game_button;
+			Ltexture* online_texture = &online_button;
+			Ltexture* exit_texture = &exit_button;
+			Ltexture* turn_texture = &turn_label;
+			Ltexture* blank_texture = &blank_button;
+			Ltexture* x_texture = &x_button;
+			Ltexture* o_texture = &o_button;
+
+			SDL_Color bgColor = {0xD9, 0xD9, 0xD9, 0xFF};
+			while (!quit)
+			{
+				while (SDL_PollEvent(&e) != 0)
 				{
-					while (SDL_PollEvent(&e) != 0)
+					if (e.type == SDL_EVENT_QUIT)
 					{
-						if (e.type == SDL_EVENT_QUIT)
-						{
-							quit = true;
-						}
-						//else if (e.type == SDL_EVENT_KEY_DOWN)
-						//{
-						//	//Set texture
-						//	if (e.key.key == SDLK_1)
-						//	{
-						//		currentTexture = &blank_button;
-						//	}
-						//	else if (e.key.key == SDLK_2)
-						//	{
-						//		currentTexture = &x_button;
-						//	}
-						//	else if (e.key.key == SDLK_3)
-						//	{
-						//		currentTexture = &o_button;
-						//	}
-						//	else if (e.key.key == SDLK_4)
-						//	{
-						//		currentTexture = &exit_button;
-						//	}
-						//}
-
+						quit = true;
 					}
+					//else if (e.type == SDL_EVENT_KEY_DOWN)
+					//{
+					//	//Set texture
+					//	if (e.key.key == SDLK_1)
+					//	{
+					//		currentTexture = &blank_button;
+					//	}
+					//	else if (e.key.key == SDLK_2)
+					//	{
+					//		currentTexture = &x_button;
+					//	}
+					//	else if (e.key.key == SDLK_3)
+					//	{
+					//		currentTexture = &o_button;
+					//	}
+					//	else if (e.key.key == SDLK_4)
+					//	{
+					//		currentTexture = &exit_button;
+					//	}
+					//}
 
-					SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 0xFF);
-					SDL_RenderClear(renderer);
-
-					//Render image on screen
-					//currentTexture->renderscreen((screen_width - currentTexture->getWidth()) / 3.f, (screen_height - currentTexture->getHeight()) / 4.f);
-					//x_texture->renderscreen((screen_width - x_texture->getWidth()) / 3.f, (screen_height - x_texture->getHeight()) / 4.f);
-					//o_texture->renderscreen((screen_width - o_texture->getWidth()) / 3.f, (screen_height - o_texture->getHeight()) / 4.f);
-					//exit_texture->renderscreen((screen_width - exit_texture->getWidth()) / 2.f, (screen_height - exit_texture->getHeight()) / 1.f);
-
-
-
-					float grid_width = 300.f;
-					float grid_height = 300.f;
-
-					float cell_width = grid_width / 2.f;
-					float cell_height = grid_height / 2.f;
-
-					float grid_x = (screen_width - grid_width) / 2.f;
-					float grid_y = (screen_height - grid_height) / 2.f;
-
-					// Top-left
-					currentTexture->renderscreen(
-						grid_x + 0 * cell_width + (cell_width - currentTexture->getWidth()) / 2.f,
-						grid_y + 0 * cell_height + (cell_height - currentTexture->getHeight()) / 2.f
-					);
-
-					// Top-right
-					x_texture->renderscreen(
-						grid_x + 1 * cell_width + (cell_width - x_texture->getWidth()) / 2.f,
-						grid_y + 0 * cell_height + (cell_height - x_texture->getHeight()) / 2.f
-					);
-
-					// Bottom-left
-					o_texture->renderscreen(
-						grid_x + 0 * cell_width + (cell_width - o_texture->getWidth()) / 2.f,
-						grid_y + 1 * cell_height + (cell_height - o_texture->getHeight()) / 2.f
-					);
-
-					// Bottom-right
-					exit_texture->renderscreen(
-						grid_x + 1 * cell_width + (cell_width - exit_texture->getWidth()) / 2.f,
-						grid_y + 1 * cell_height + (cell_height - exit_texture->getHeight()) / 2.f
-					);
-
-
-					//Update screen
-					SDL_RenderPresent(renderer);
-
-					//tic_Button.renderscreen(0.0, 5.0);
-
-					SDL_RenderPresent(renderer);
-
-					SDL_FillSurfaceRect(winSurface, nullptr, color);
-					SDL_BlitSurface(Test_surface, nullptr, winSurface, nullptr);
-					SDL_UpdateWindowSurface(window);
 				}
+
+				SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 0xFF);
+				SDL_RenderClear(renderer);
+
+
+				// first column
+
+				new_game_button.renderscreen(20.0, 15.0);
+				online_button.renderscreen(20.0, 100.0);
+				exit_button.renderscreen(20.0, 185.0);
+				turn_label.renderscreen(20.0, 270.0);
+
+				//second column
+
+				blank_button.renderscreen(212.5, 15.0);
+				blank_button.renderscreen(212.5, 170.0);
+				blank_button.renderscreen(212.5, 325.0);
+
+				//third column
+
+				blank_button.renderscreen(362.5, 15.0);
+				blank_button.renderscreen(362.5, 170.0);
+				blank_button.renderscreen(362.5, 325.0);
+
+				//fourth column
+
+				blank_button.renderscreen(512.5, 15.0);
+				blank_button.renderscreen(512.5, 170.0);
+				blank_button.renderscreen(512.5, 325.0);
+
+				//Render image on screen
+				//currentTexture->renderscreen((screen_width - currentTexture->getWidth()) / 3.f, (screen_height - currentTexture->getHeight()) / 4.f);
+				//x_texture->renderscreen((screen_width - x_texture->getWidth()) / 3.f, (screen_height - x_texture->getHeight()) / 4.f);
+				//o_texture->renderscreen((screen_width - o_texture->getWidth()) / 3.f, (screen_height - o_texture->getHeight()) / 4.f);
+				//exit_texture->renderscreen((screen_width - exit_texture->getWidth()) / 2.f, (screen_height - exit_texture->getHeight()) / 1.f);
+
+
+				/*
+				float grid_width = 300.f;
+				float grid_height = 300.f;
+
+				float cell_width = grid_width / 2.f;
+				float cell_height = grid_height / 2.f;
+
+				float grid_x = (screen_width - grid_width) / 2.f;
+				float grid_y = (screen_height - grid_height) / 2.f;
+
+				// Top-left
+				currentTexture->renderscreen(
+					grid_x + 0 * cell_width + (cell_width - currentTexture->getWidth()) / 2.f,
+					grid_y + 0 * cell_height + (cell_height - currentTexture->getHeight()) / 2.f
+				);
+
+				// Top-right
+				x_texture->renderscreen(
+					grid_x + 1 * cell_width + (cell_width - x_texture->getWidth()) / 2.f,
+					grid_y + 0 * cell_height + (cell_height - x_texture->getHeight()) / 2.f
+				);
+
+				// Bottom-left
+				o_texture->renderscreen(
+					grid_x + 0 * cell_width + (cell_width - o_texture->getWidth()) / 2.f,
+					grid_y + 1 * cell_height + (cell_height - o_texture->getHeight()) / 2.f
+				);
+
+				// Bottom-right
+				exit_texture->renderscreen
+				(
+					grid_x + 1 * cell_width + (cell_width - exit_texture->getWidth()) / 2.f,
+					grid_y + 1 * cell_height + (cell_height - exit_texture->getHeight()) / 2.f
+				);*/
+
+
+				//Update screen
+				SDL_RenderPresent(renderer);
+
+
+				SDL_RenderPresent(renderer);
+
+				SDL_FillSurfaceRect(winSurface, nullptr, color);
+				SDL_BlitSurface(Test_surface, nullptr, winSurface, nullptr);
+				SDL_UpdateWindowSurface(window);
+				
 			}
 
 		}

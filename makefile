@@ -5,7 +5,7 @@
 │   ├── core/              # Game logic
 │   │   ├── game.cpp
 │   │   ├── game.hpp
-│   │   └── board.hpp      # If board logic is separate
+│   │   └── board.hpp      
 │
 │   ├── network/           # Networking code
 │   │   ├── network.cpp
@@ -14,12 +14,12 @@
 │   ├── gui/               # SDL GUI code
 │   │   ├── renderer.cpp
 │   │   ├── renderer.hpp
-│   │   └── assets/        # Any image/sound files
+│   │   └── assets/        
 │
-├── include/               # Shared headers (optional)
-│   └── config.hpp         # Shared constants/macros
+├── include/               
+│   └── config.hpp         
 │
-├── build/                 # Compiled files (ignored in git)
+├── build/                 
 │
-├── CMakeLists.txt / Makefile  # Your build system
+├── CMakeLists.txt / Makefile  
 └── README.md
