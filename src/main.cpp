@@ -139,23 +139,23 @@ bool loadMedia()
 	bool success{ true };
 
 	//Load directional images
-	if (!blank_button.loadFromFile("res/SDL3_Buttons.png"))
+	if (!blank_button.loadFromFile("src\\gui\\assets\\SDL3_Buttons.png"))
 	{
 		SDL_Log("Unable to load up image!\n");
 	}
-	if (!x_button.loadFromFile("res/SDL3_O_Button.png"))
+	if (!x_button.loadFromFile("src\\gui\\assets\\SDL3_O_Button.png"))
 	{
 		SDL_Log("Unable to load down image!\n");
 	}
-	if (!o_button.loadFromFile("res/SDL3_X_Button.png"))
+	if (!o_button.loadFromFile("src\\gui\\assets\\SDL3_X_Button.png"))
 	{
 		SDL_Log("Unable to load left image!\n");
 	}
-	if (!exit_button.loadFromFile("res/SDL3_Exit_Button.png"))
+	if (!exit_button.loadFromFile("src\\gui\\assets\\SDL3_Exit_Button.png"))
 	{
 		SDL_Log("Unable to load right image!\n");
 	}
-	if (!tic_Button.loadFromFile("res/SDL3_New_Game_Button.png"))
+	if (!tic_Button.loadFromFile("src\\gui\\assets\\SDL3_New_Game_Button.png"))
 	{
 		SDL_Log("Unable to load blank image!\n");
 	}
@@ -222,6 +222,7 @@ int main(int argc, char* argv[])
 				Ltexture* x_texture = &x_button;
 				Ltexture* o_texture = &o_button;
 				Ltexture* exit_texture = &exit_button;
+				Ltexture* tic_texture = &tic_Button;
 
 				SDL_Color bgColor = { 0xFF, 0xFF, 0xFF, 0xFF };
 				while (!quit)
@@ -259,10 +260,46 @@ int main(int argc, char* argv[])
 					SDL_RenderClear(renderer);
 
 					//Render image on screen
-					currentTexture->renderscreen((screen_width - currentTexture->getWidth()) / 2.f, (screen_height - currentTexture->getHeight()) / 2.f);
-					//x_texture->renderscreen((screen_width - x_texture->getWidth()) / 2.f, (screen_height - x_texture->getHeight()) / 2.f);
-					o_texture->renderscreen((screen_width - o_texture->getWidth()) / 2.f, (screen_height - o_texture->getHeight()) / 2.f);
-					//exit_texture->renderscreen((screen_width - exit_texture->getWidth()) / 2.f, (screen_height - exit_texture->getHeight()) / 2.f);
+					//currentTexture->renderscreen((screen_width - currentTexture->getWidth()) / 3.f, (screen_height - currentTexture->getHeight()) / 4.f);
+					//x_texture->renderscreen((screen_width - x_texture->getWidth()) / 3.f, (screen_height - x_texture->getHeight()) / 4.f);
+					//o_texture->renderscreen((screen_width - o_texture->getWidth()) / 3.f, (screen_height - o_texture->getHeight()) / 4.f);
+					//exit_texture->renderscreen((screen_width - exit_texture->getWidth()) / 2.f, (screen_height - exit_texture->getHeight()) / 1.f);
+
+
+
+					float grid_width = 300.f;
+					float grid_height = 300.f;
+
+					float cell_width = grid_width / 2.f;
+					float cell_height = grid_height / 2.f;
+
+					float grid_x = (screen_width - grid_width) / 2.f;
+					float grid_y = (screen_height - grid_height) / 2.f;
+
+					// Top-left
+					currentTexture->renderscreen(
+						grid_x + 0 * cell_width + (cell_width - currentTexture->getWidth()) / 2.f,
+						grid_y + 0 * cell_height + (cell_height - currentTexture->getHeight()) / 2.f
+					);
+
+					// Top-right
+					x_texture->renderscreen(
+						grid_x + 1 * cell_width + (cell_width - x_texture->getWidth()) / 2.f,
+						grid_y + 0 * cell_height + (cell_height - x_texture->getHeight()) / 2.f
+					);
+
+					// Bottom-left
+					o_texture->renderscreen(
+						grid_x + 0 * cell_width + (cell_width - o_texture->getWidth()) / 2.f,
+						grid_y + 1 * cell_height + (cell_height - o_texture->getHeight()) / 2.f
+					);
+
+					// Bottom-right
+					exit_texture->renderscreen(
+						grid_x + 1 * cell_width + (cell_width - exit_texture->getWidth()) / 2.f,
+						grid_y + 1 * cell_height + (cell_height - exit_texture->getHeight()) / 2.f
+					);
+
 
 					//Update screen
 					SDL_RenderPresent(renderer);
