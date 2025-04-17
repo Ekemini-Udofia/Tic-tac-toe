@@ -1,6 +1,6 @@
 # 🎮 Tic-Tac-Toe Game (SDL3 + Winsock)
 
-A clean and fun desktop version of the classic Tic-Tac-Toe game, built with C++, SDL3 for graphics, and Winsock for network capabilities (multiplayer features). This project blends smooth visuals with basic multiplayer features, all wrapped in a simple and easy-to-use interface.
+A clean and fun desktop version of the classic Tic-Tac-Toe game, built with C++, SDL3 for graphics, and Winsock for network capabilities. This project blends smooth visuals with basic multiplayer features, all wrapped in a simple and easy-to-use interface.
 
 ---
 
@@ -21,8 +21,7 @@ A clean and fun desktop version of the classic Tic-Tac-Toe game, built with C++,
 
 ## 🧑‍💻 Contributors
 
-- **Ekemini** – Developer, UI Designer, and Architect  
-Feel free to add yourself if you contribute
+- **Ekemini** – Developer, UI Designer, and Architect 
 
 ---
 
