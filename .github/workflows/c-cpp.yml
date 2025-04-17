@@ -13,11 +13,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    # Install dependencies (including SDL3)
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y libsdl3-dev cmake
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake libsdl3-dev
 
-    - name: Configure
+    # Configure and build the project
+    - name: Configure project
       run: cmake -S . -B build
 
-    - name: Build
-      run: cmake --build build
+    - name: Build project
+      run: cmake --build build --verbose
+
+    - name: Run tests (optional)
+      run: make check
