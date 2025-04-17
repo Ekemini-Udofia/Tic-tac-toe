@@ -4,7 +4,7 @@ A clean and fun desktop version of the classic Tic-Tac-Toe game, built with C++,
 
 ---
 
-![Tic-Tac-Toe App Screenshot](# "Image showing how the finished app looks like")
+![git-tic](https://github.com/user-attachments/assets/18cc1c4f-615f-42b6-9bfb-67590454faa9)
 
 ---
 
