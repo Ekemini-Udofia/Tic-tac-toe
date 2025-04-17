@@ -13,11 +13,21 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # Install dependencies (including SDL3)
+    # Install dependencies (without SDL3 from package manager)
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install build-essential cmake libsdl3-dev libgl-dev
+        sudo apt-get install -y cmake build-essential
+
+    # Manually install SDL3 from GitHub releases
+    - name: Install SDL3
+      run: |
+        wget https://github.com/libsdl-org/SDL/releases/download/release-3.0.0/SDL3-3.0.0.tar.gz
+        tar -xvzf SDL3-3.0.0.tar.gz
+        cd SDL3-3.0.0
+        ./configure
+        make
+        sudo make install
 
     # Configure and build the project
     - name: Configure project
