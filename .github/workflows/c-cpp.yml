@@ -17,7 +17,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake libsdl3-dev
+        sudo apt-get install build-essential cmake libsdl3-dev libgl-dev
 
     # Configure and build the project
     - name: Configure project
