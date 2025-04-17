@@ -22,7 +22,7 @@ A clean and fun desktop version of the classic Tic-Tac-Toe game, built with C++,
 ## 🧑‍💻 Contributors
 
 - **Ekemini** – Developer, UI Designer, and Architect  
-![Feel free to add yourself if you contribute!]
+Feel free to add yourself if you contribute
 
 ---
 
