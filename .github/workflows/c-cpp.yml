@@ -22,8 +22,8 @@ jobs:
     # Manually install SDL3 from GitHub releases
     - name: Install SDL3
       run: |
-        wget https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.zip
-        tar -xvzf SDL3-3.2.10.zip
+        wget https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz
+        tar -xvzf SDL3-3.2.10.tar.gz
         cd SDL3-3.2.10
         ./configure
         make
