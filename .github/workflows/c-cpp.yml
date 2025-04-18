@@ -66,6 +66,17 @@ jobs:
         sudo cmake --install build
 
 
+    - name: Install SDL3_image
+      run: |
+        wget https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz
+        tar -xvzf SDL3_image-3.2.4.tar.gz
+        cd SDL3_image-3.2.4
+        cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+        cmake --build build
+        sudo cmake --install build
+
+
+
     # Configure and build the project
     - name: Configure project
       run: cmake -S . -B build
