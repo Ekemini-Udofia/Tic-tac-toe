@@ -20,14 +20,26 @@ jobs:
         sudo apt-get install -y cmake build-essential
 
     # Manually install SDL3 from GitHub releases
+    # - name: Install SDL3
+      # run: |
+        # wget https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz
+        # tar -xvzf SDL3-3.2.10.tar.gz
+        # cd SDL3-3.2.10
+        # ./configure
+        # make
+        # sudo make install
+
     - name: Install SDL3
       run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake ninja-build build-essential
         wget https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz
         tar -xvzf SDL3-3.2.10.tar.gz
         cd SDL3-3.2.10
-        ./configure
-        make
-        sudo make install
+        cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+        cmake --build build
+        sudo cmake --install build
+
 
     # Configure and build the project
     - name: Configure project
