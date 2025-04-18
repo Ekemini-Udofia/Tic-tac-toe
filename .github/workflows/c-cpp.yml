@@ -29,6 +29,31 @@ jobs:
         # make
         # sudo make install
 
+    - name: Install SDL3 dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libx11-dev \
+          libxext-dev \
+          libxrandr-dev \
+          libxcursor-dev \
+          libxfixes-dev \
+          libxi-dev \
+          libxss-dev \
+          libwayland-dev \
+          libdrm-dev \
+          libgbm-dev \
+          libegl1-mesa-dev \
+          libgles2-mesa-dev \
+          libasound2-dev \
+          libpulse-dev \
+          libudev-dev \
+          libdbus-1-dev \
+          libibus-1.0-dev \
+          fcitx-libs-dev \
+          libdecor-0-dev
+
+
     - name: Install SDL3
       run: |
         sudo apt-get update
