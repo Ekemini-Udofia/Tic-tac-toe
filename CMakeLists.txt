@@ -15,5 +15,8 @@ include_directories(src)
 # Executable
 add_executable(tictactoe ${SOURCES})
 
+# SDL_Image stuff (added by me)
+target_link_libraries(tictactoe SDL3_image)
+
 # Link SDL3
 target_link_libraries(tictactoe SDL3::SDL3)
