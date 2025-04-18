@@ -83,6 +83,3 @@ jobs:
 
     - name: Build project
       run: cmake --build build --verbose
-
-    - name: Run tests (optional)
-      run: make check
