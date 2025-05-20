@@ -16,5 +16,5 @@ bool init_network()
 
 class player {
 	public:
-		bool 
+		bool is_turn;
 };

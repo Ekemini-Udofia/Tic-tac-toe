@@ -1,5 +1,5 @@
 #include <iostream>
-#include "src/network/network.hpp"
+//#include "network/network.hpp"
 
 
 int row;
@@ -32,6 +32,7 @@ class player {
 
 void init_game()
 {
+	int a;
 
 }
 
@@ -43,22 +44,23 @@ bool make_move(int row, int col, char symbol)
 		fill corresponding square in renderer.cpp with the players symbol
 
 	*/
-
+	return true;
 }
 
 bool check_winner(char symbol)
 {
-
+	return true;
 }
 
 bool is_draw()
 {
-
+	return true;
 }
 
 
-void make_move(row, col, id)
+void make_move(int row, int col, int id)
 {
+	int a;
 
 }
 
@@ -66,5 +68,5 @@ void make_move(row, col, id)
 
 void gameloop()
 {
-
+	int a;
 }
