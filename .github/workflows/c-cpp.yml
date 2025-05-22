@@ -9,72 +9,35 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # Install dependencies (without SDL3 from package manager)
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y cmake build-essential
+      - name: Install CMake and Ninja (via Chocolatey)
+        run: |
+          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+          choco install ninja -y
+        shell: powershell
 
-    # Manually install SDL3 from GitHub releases
-    # - name: Install SDL3
-      # run: |
-        # wget https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz
-        # tar -xvzf SDL3-3.2.10.tar.gz
-        # cd SDL3-3.2.10
-        # ./configure
-        # make
-        # sudo make install
+      - name: Download and install SDL3
+        run: |
+          Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz -OutFile SDL3.tar.gz
+          tar -xvzf SDL3.tar.gz
+          cd SDL3-3.2.10
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:/SDL3"
+          cmake --build build
+          cmake --install build
+        shell: powershell
 
-    - name: Install SDL3 dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          libx11-dev \
-          libxext-dev \
-          libxrandr-dev \
-          libxcursor-dev \
-          libxfixes-dev \
-          libxi-dev \
-          libxss-dev \
-          libwayland-dev \
-          libdrm-dev \
-          libgbm-dev \
-          libegl1-mesa-dev \
-          libgles2-mesa-dev \
-          libasound2-dev \
-          libpulse-dev \
-          libudev-dev \
-          libdbus-1-dev \
-          libibus-1.0-dev \
-          fcitx-libs-dev \
-          libdecor-0-dev
-
-
-    - name: Install SDL3
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y cmake ninja-build build-essential
-        wget https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz
-        tar -xvzf SDL3-3.2.10.tar.gz
-        cd SDL3-3.2.10
-        cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
-        cmake --build build
-        sudo cmake --install build
-
-
-    - name: Install SDL3_image
-      run: |
-        wget https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz
-        tar -xvzf SDL3_image-3.2.4.tar.gz
-        cd SDL3_image-3.2.4
-        cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
-        cmake --build build
-        sudo cmake --install build
-
+      - name: Download and install SDL3_image
+        run: |
+          Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz -OutFile SDL3_image.tar.gz
+          tar -xvzf SDL3_image.tar.gz
+          cd SDL3_image-3.2.4
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:/SDL3"
+          cmake --build build
+          cmake --install build
+        shell: powershell
 
 
     # Configure and build the project
