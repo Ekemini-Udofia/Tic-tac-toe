@@ -19,6 +19,10 @@ jobs:
           choco install ninja -y
         shell: powershell
 
+      - name: Clean SDL3 install folder
+        run: Remove-Item -Path "C:/SDL3" -Recurse -Force -ErrorAction Ignore
+        shell: powershell
+
       - name: Download and install SDL3
         run: |
           Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz -OutFile SDL3.tar.gz
