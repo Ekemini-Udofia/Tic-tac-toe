@@ -24,9 +24,9 @@ jobs:
           Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz -OutFile SDL3.tar.gz
           tar -xvzf SDL3.tar.gz
           cd SDL3-3.2.10
-          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:/SDL3"
-          cmake --build build
-          cmake --install build
+          cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3"
+          cmake --build build --config Release
+          cmake --install build --config Release
         shell: powershell
 
       - name: Download and install SDL3_image
@@ -34,13 +34,13 @@ jobs:
           Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz -OutFile SDL3_image.tar.gz
           tar -xvzf SDL3_image.tar.gz
           cd SDL3_image-3.2.4
-          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:/SDL3"
-          cmake --build build
-          cmake --install build
+          cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3" -DCMAKE_PREFIX_PATH="C:/SDL3"
+          cmake --build build --config Release
+          cmake --install build --config Release
         shell: powershell
 
       - name: Configure project
-        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="C:/SDL3"
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="C:/SDL3"
 
       - name: Build project
-        run: cmake --build build --verbose
+        run: cmake --build build --config Release --verbose
