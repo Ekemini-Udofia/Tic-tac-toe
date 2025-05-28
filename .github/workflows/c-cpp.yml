@@ -10,39 +10,55 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install CMake and Ninja (via Chocolatey)
+      - name: Install dependencies
         run: |
           choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
           choco install ninja -y
         shell: powershell
 
+      - name: Clean SDL3 folder
+        run: Remove-Item -Recurse -Force -ErrorAction Ignore "C:/SDL3"
+        shell: powershell
+
       - name: Download and install SDL3
         run: |
-          Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz -OutFile SDL3.tar.gz
+          Invoke-WebRequest https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz -OutFile SDL3.tar.gz
           tar -xvzf SDL3.tar.gz
           cd SDL3-3.2.10
-          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:/SDL3"
-          cmake --build build
-          cmake --install build
+
+          cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3"
+          cmake --build build --config Release
+
+          # Prevent install error if SDL3.dll exists
+          $dll = "build/Release/SDL3.dll"
+          if (Test-Path $dll) { Remove-Item $dll -Force }
+
+          cmake --install build --config Release
         shell: powershell
 
       - name: Download and install SDL3_image
         run: |
-          Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz -OutFile SDL3_image.tar.gz
+          Invoke-WebRequest https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz -OutFile SDL3_image.tar.gz
           tar -xvzf SDL3_image.tar.gz
           cd SDL3_image-3.2.4
-          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:/SDL3"
-          cmake --build build
-          cmake --install build
+
+          cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3" -DCMAKE_PREFIX_PATH="C:/SDL3"
+          cmake --build build --config Release
+          cmake --install build --config Release
         shell: powershell
 
+      - name: Configure your Tic-Tac-Toe project
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="C:/SDL3"
 
-    # Configure and build the project
-    - name: Configure project
-      run: cmake -S . -B build
+      - name: Build your project
+        run: cmake --build build --config Release
 
-    - name: Build project
-      run: cmake --build build --verbose
+      - name: Copy required DLLs to output folder
+        run: |
+          Copy-Item "C:/SDL3/bin/SDL3.dll" -Destination "build/Release" -Force
+          Copy-Item "C:/SDL3/bin/SDL3_image.dll" -Destination "build/Release" -Force
+          Copy-Item "C:/SDL3/bin/zlib1.dll" -Destination "build/Release" -Force
+        shell: powershell
