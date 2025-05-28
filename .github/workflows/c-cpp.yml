@@ -39,10 +39,8 @@ jobs:
           cmake --install build
         shell: powershell
 
+      - name: Configure project
+        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="C:/SDL3"
 
-    # Configure and build the project
-    - name: Configure project
-      run: cmake -S . -B build
-
-    - name: Build project
-      run: cmake --build build --verbose
+      - name: Build project
+        run: cmake --build build --verbose
