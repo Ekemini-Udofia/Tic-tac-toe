@@ -44,3 +44,10 @@ jobs:
 
       - name: Build project
         run: cmake --build build --config Release --verbose
+
+      - name: Copy SDL DLLs to build output
+        run: |
+          Copy-Item -Path "C:/SDL3/bin/SDL3.dll" -Destination "build/Release" -Force
+          Copy-Item -Path "C:/SDL3/bin/SDL3_image.dll" -Destination "build/Release" -Force
+          Copy-Item -Path "C:/SDL3/bin/zlib1.dll" -Destination "build/Release" -Force
+        shell: powershell
