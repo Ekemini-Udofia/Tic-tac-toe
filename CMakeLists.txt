@@ -3,20 +3,24 @@ project(TicTacToe)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Add all source files
+# Find SDL3 and SDL3_image
+set(CMAKE_PREFIX_PATH "C:/SDL3")  # Adjust path if needed
+find_package(SDL3 REQUIRED CONFIG)
+find_package(SDL3_image REQUIRED CONFIG)
+
+# Add source files
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
-# Find SDL3
-find_package(SDL3 REQUIRED CONFIG)
-
-# Include directories
-include_directories(src)
-
-# Executable
+# Create executable
 add_executable(tictactoe ${SOURCES})
 
-# SDL_Image stuff (added by me)
-target_link_libraries(tictactoe SDL3_image)
+# Include headers
+target_include_directories(tictactoe PRIVATE src)
 
-# Link SDL3
-target_link_libraries(tictactoe SDL3::SDL3)
+# Link libraries
+target_link_libraries(tictactoe
+    PRIVATE
+    SDL3::SDL3
+    SDL3_image::SDL3_image
+    ws2_32  # For Winsock
+)
