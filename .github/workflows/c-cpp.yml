@@ -31,6 +31,11 @@ jobs:
           cd SDL3_temp\SDL3-3.2.10
           cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3"
           cmake --build build --config Release
+
+          # Always remove existing DLL before install to avoid error
+          $dll = "build/Release/SDL3.dll"
+          if (Test-Path $dll) { Remove-Item $dll -Force }
+
           cmake --install build --config Release
         shell: powershell
 
