@@ -1,4 +1,4 @@
-
+#include <cstdint>
 #include <SDL3/SDL.h>
 //#include <SDL3/SDL_main.h>
 #include <string>
@@ -6,8 +6,8 @@
 
 
 //sets the screen dimensions 
-constexpr int screen_width = 670;
-constexpr int screen_height = 480;
+constexpr uint16_t screen_width = 670;
+constexpr uint16_t screen_height = 480;
 
 SDL_Window* window{ nullptr };
 SDL_Surface* winSurface{ nullptr };
@@ -17,12 +17,13 @@ SDL_Surface* Test_surface{ nullptr };
 
 
 
+
 const char* title = "Tictactoe";
 
-Uint8 r = 255;
-Uint8 g = 90;
-Uint8 b = 120;
-Uint8 a = 255;
+Uint8 r{ 255 };
+Uint8 g{ 90 };
+Uint8 b{ 120 };
+Uint8 a{ 255 };
 
 Uint32 color = (r << 24) | (g << 16) | (b << 8) | a;
 
@@ -114,7 +115,7 @@ bool init()
 	}
 	else
 	{
-		if (!SDL_CreateWindowAndRenderer(title, screen_width, screen_height, 0, &window, &renderer))
+		if (!SDL_CreateWindowAndRenderer(title, static_cast<int>(screen_width), static_cast<int>(screen_height), SDL_WINDOW_TRANSPARENT, &window, &renderer))
 		{
 			SDL_Log("Failed to create a window! Error: %s\n", SDL_GetError());
 			success = false;
@@ -198,7 +199,7 @@ void Destroy_Window()
 }
 
 //int main(int argc, char* argv[])
-void game_gui()
+void init_gui()
 {
 	//int exitcode{ 0 };
 
@@ -232,6 +233,8 @@ void game_gui()
 			Ltexture* player_1;
 			Ltexture* player_2;
 
+
+
 			SDL_Color bgColor = { 0xD9, 0xD9, 0xD9, 0xFF };
 			while (!quit)
 			{
@@ -241,110 +244,25 @@ void game_gui()
 					{
 						quit = true;
 					}
-					//else if (e.type == SDL_EVENT_KEY_DOWN)
-					//{
-					//	//Set texture
-					//	if (e.key.key == SDLK_1)
-					//	{
-					//		currentTexture = &blank_button;
-					//	}
-					//	else if (e.key.key == SDLK_2)
-					//	{
-					//		currentTexture = &x_button;
-					//	}
-					//	else if (e.key.key == SDLK_3)
-					//	{
-					//		currentTexture = &o_button;
-					//	}
-					//	else if (e.key.key == SDLK_4)
-					//	{
-					//		currentTexture = &exit_button;
-					//	}
-					//}
+					// Graphics Main Loop
 
+
+					//Update screen
+					SDL_RenderPresent(renderer);
+
+
+					SDL_RenderPresent(renderer);
+
+					//SDL_FillSurfaceRect(winSurface, nullptr, color);
+					SDL_BlitSurface(Test_surface, nullptr, winSurface, nullptr);
+					SDL_UpdateWindowSurface(window);
 				}
 
-				SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 0xFF);
-				SDL_RenderClear(renderer);
+				//SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 0xFF);
+				//SDL_RenderClear(renderer);
 
 
-				// first column
-
-				new_game_button.renderscreen(20.0, 15.0);
-				online_button.renderscreen(20.0, 100.0);
-				exit_button.renderscreen(20.0, 185.0);
-				turn_label.renderscreen(20.0, 270.0);
-
-				//second column
-
-				blank_button.renderscreen(212.5, 15.0);
-				blank_button.renderscreen(212.5, 170.0);
-				blank_button.renderscreen(212.5, 325.0);
-
-				//third column
-
-				blank_button.renderscreen(362.5, 15.0);
-				blank_button.renderscreen(362.5, 170.0);
-				blank_button.renderscreen(362.5, 325.0);
-
-				//fourth column
-
-				blank_button.renderscreen(512.5, 15.0);
-				blank_button.renderscreen(512.5, 170.0);
-				blank_button.renderscreen(512.5, 325.0);
-
-				//Render image on screen
-				//currentTexture->renderscreen((screen_width - currentTexture->getWidth()) / 3.f, (screen_height - currentTexture->getHeight()) / 4.f);
-				//x_texture->renderscreen((screen_width - x_texture->getWidth()) / 3.f, (screen_height - x_texture->getHeight()) / 4.f);
-				//o_texture->renderscreen((screen_width - o_texture->getWidth()) / 3.f, (screen_height - o_texture->getHeight()) / 4.f);
-				//exit_texture->renderscreen((screen_width - exit_texture->getWidth()) / 2.f, (screen_height - exit_texture->getHeight()) / 1.f);
-
-
-				/*
-				float grid_width = 300.f;
-				float grid_height = 300.f;
-
-				float cell_width = grid_width / 2.f;
-				float cell_height = grid_height / 2.f;
-
-				float grid_x = (screen_width - grid_width) / 2.f;
-				float grid_y = (screen_height - grid_height) / 2.f;
-
-				// Top-left
-				currentTexture->renderscreen(
-					grid_x + 0 * cell_width + (cell_width - currentTexture->getWidth()) / 2.f,
-					grid_y + 0 * cell_height + (cell_height - currentTexture->getHeight()) / 2.f
-				);
-
-				// Top-right
-				x_texture->renderscreen(
-					grid_x + 1 * cell_width + (cell_width - x_texture->getWidth()) / 2.f,
-					grid_y + 0 * cell_height + (cell_height - x_texture->getHeight()) / 2.f
-				);
-
-				// Bottom-left
-				o_texture->renderscreen(
-					grid_x + 0 * cell_width + (cell_width - o_texture->getWidth()) / 2.f,
-					grid_y + 1 * cell_height + (cell_height - o_texture->getHeight()) / 2.f
-				);
-
-				// Bottom-right
-				exit_texture->renderscreen
-				(
-					grid_x + 1 * cell_width + (cell_width - exit_texture->getWidth()) / 2.f,
-					grid_y + 1 * cell_height + (cell_height - exit_texture->getHeight()) / 2.f
-				);*/
-
-
-				//Update screen
-				SDL_RenderPresent(renderer);
-
-
-				SDL_RenderPresent(renderer);
-
-				SDL_FillSurfaceRect(winSurface, nullptr, color);
-				SDL_BlitSurface(Test_surface, nullptr, winSurface, nullptr);
-				SDL_UpdateWindowSurface(window);
+				
 
 			}
 

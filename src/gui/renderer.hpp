@@ -1,3 +1,3 @@
 #pragma once
 
-void game_gui();
+void init_gui();

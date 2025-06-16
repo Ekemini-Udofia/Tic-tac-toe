@@ -1,7 +1,7 @@
-#include "gui/renderer.hpp"
+#include "core//game.hpp"
 
 int main(int argc, char* argv[])
 {
-	game_gui();
+	gameloop();
 	return 0;
 }
