@@ -27,8 +27,8 @@ jobs:
       - name: Download and extract SDL3
         run: |
           Invoke-WebRequest https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz -OutFile SDL3.tar.gz
-          7z e SDL3.tar.gz -oSDL3_temp
-          7z x SDL3.tar -oSDL3_temp
+          7z e SDL3.tar.gz -o. -y
+          7z x SDL3-3.2.10.tar -oSDL3_temp -y
           cd SDL3_temp\SDL3-3.2.10
           cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3"
           cmake --build build --config Release
@@ -38,8 +38,8 @@ jobs:
       - name: Download and extract SDL3_image
         run: |
           Invoke-WebRequest https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz -OutFile SDL3_image.tar.gz
-          7z e SDL3_image.tar.gz -oSDL3_image_temp
-          7z x SDL3_image.tar -oSDL3_image_temp
+          7z e SDL3_image.tar.gz -o. -y
+          7z x SDL3_image-3.2.4.tar -oSDL3_image_temp -y
           cd SDL3_image_temp\SDL3_image-3.2.4
           cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3" -DCMAKE_PREFIX_PATH="C:/SDL3"
           cmake --build build --config Release
