@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,42 +24,43 @@ jobs:
         run: Remove-Item -Recurse -Force -ErrorAction Ignore "C:/SDL3"
         shell: powershell
 
-      - name: Download and install SDL3
+      - name: Download and extract SDL3
         run: |
           Invoke-WebRequest https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz -OutFile SDL3.tar.gz
-          tar -xvzf SDL3.tar.gz
-          cd SDL3-3.2.10
-
+          7z e SDL3.tar.gz -oSDL3_temp
+          7z x SDL3.tar -oSDL3_temp
+          cd SDL3_temp\SDL3-3.2.10
           cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3"
           cmake --build build --config Release
-
-          # Prevent install error if SDL3.dll exists
-          $dll = "build/Release/SDL3.dll"
-          if (Test-Path $dll) { Remove-Item $dll -Force }
-
           cmake --install build --config Release
         shell: powershell
 
-      - name: Download and install SDL3_image
+      - name: Download and extract SDL3_image
         run: |
           Invoke-WebRequest https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz -OutFile SDL3_image.tar.gz
-          tar -xvzf SDL3_image.tar.gz
-          cd SDL3_image-3.2.4
-
+          7z e SDL3_image.tar.gz -oSDL3_image_temp
+          7z x SDL3_image.tar -oSDL3_image_temp
+          cd SDL3_image_temp\SDL3_image-3.2.4
           cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3" -DCMAKE_PREFIX_PATH="C:/SDL3"
           cmake --build build --config Release
           cmake --install build --config Release
         shell: powershell
 
-      - name: Configure your Tic-Tac-Toe project
+      - name: Configure Tic-Tac-Toe Project
         run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="C:/SDL3"
+        shell: powershell
 
-      - name: Build your project
+      - name: Build Tic-Tac-Toe Project
         run: cmake --build build --config Release
+        shell: powershell
 
-      - name: Copy required DLLs to output folder
+      - name: Copy required DLLs
         run: |
-          Copy-Item "C:/SDL3/bin/SDL3.dll" -Destination "build/Release" -Force
-          Copy-Item "C:/SDL3/bin/SDL3_image.dll" -Destination "build/Release" -Force
-          Copy-Item "C:/SDL3/bin/zlib1.dll" -Destination "build/Release" -Force
+          $dlls = @("SDL3.dll", "SDL3_image.dll", "zlib1.dll")
+          foreach ($dll in $dlls) {
+            $source = "C:/SDL3/bin/$dll"
+            if (Test-Path $source) {
+              Copy-Item $source -Destination "build/Release" -Force
+            }
+          }
         shell: powershell
