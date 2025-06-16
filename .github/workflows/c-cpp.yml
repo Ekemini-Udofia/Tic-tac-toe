@@ -26,22 +26,30 @@ jobs:
 
       - name: Download and extract SDL3
         run: |
-          Invoke-WebRequest https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.tar.gz -OutFile SDL3.tar.gz
-          7z e SDL3.tar.gz -o. -y
-          7z x SDL3-3.2.10.tar -oSDL3_temp -y
+          Invoke-WebRequest https://github.com/libsdl-org/SDL/releases/download/release-3.2.10/SDL3-3.2.10.zip -OutFile SDL3.zip
+          Expand-Archive SDL3.zip -DestinationPath SDL3_temp
           cd SDL3_temp\SDL3-3.2.10
-          cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3"
+          cmake -B build -G "Visual Studio 17 2022" -A x64 `
+                -DCMAKE_INSTALL_PREFIX="C:/SDL3" `
+                -DSDL_INSTALL_TESTS=OFF `
+                -DSDL_SKIP_INSTALL_LIBS=ON
           cmake --build build --config Release
+
+          # Safety: remove the DLL to avoid install conflict
+          $dll = "build/Release/SDL3.dll"
+          if (Test-Path $dll) { Remove-Item $dll -Force }
+
           cmake --install build --config Release
         shell: powershell
 
       - name: Download and extract SDL3_image
         run: |
-          Invoke-WebRequest https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz -OutFile SDL3_image.tar.gz
-          7z e SDL3_image.tar.gz -o. -y
-          7z x SDL3_image-3.2.4.tar -oSDL3_image_temp -y
+          Invoke-WebRequest https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.zip -OutFile SDL3_image.zip
+          Expand-Archive SDL3_image.zip -DestinationPath SDL3_image_temp
           cd SDL3_image_temp\SDL3_image-3.2.4
-          cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="C:/SDL3" -DCMAKE_PREFIX_PATH="C:/SDL3"
+          cmake -B build -G "Visual Studio 17 2022" -A x64 `
+                -DCMAKE_INSTALL_PREFIX="C:/SDL3" `
+                -DCMAKE_PREFIX_PATH="C:/SDL3"
           cmake --build build --config Release
           cmake --install build --config Release
         shell: powershell
