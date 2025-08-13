@@ -17,9 +17,6 @@ class player {
 		bool players_turn{ false };
 
 		player(){
-			// For now well cout << "Player Created";
-			// We'll delete after were done with the console
-			// 
 			std::cout << "Player Object Created\n";
 		}
 
@@ -34,17 +31,12 @@ class player {
 
 
 void init_game(){
-	int a;
+	[[maybe_unused]] int a;
 
 }
 
 bool make_move(int row, int col, char symbol) {
-	// Pseudo-code
-	/*  get player input
-		check wether player is x or o
-		fill corresponding square in renderer.cpp with the players symbol
 
-	*/
 	return true;
 }
 
@@ -58,7 +50,7 @@ bool is_draw(){
 
 
 void make_move(int row, int col, int id){
-	int a;
+	[[maybe_unused]] int a;
 
 }
 
