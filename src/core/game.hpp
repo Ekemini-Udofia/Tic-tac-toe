@@ -1,16 +1,31 @@
-#pragma once
+#ifndef	CORE_GAME_HPP_
+#define CORE_GAME_HPP_
 
+#include "board.hpp"
+#include "player.hpp"
+#include "move.hpp"
 
-class player {
-public:
-	int player_id;
-	bool is_online;
-	bool players_turn;
+namespace core {
+	enum class GameState {kOngoing, kWin, kDraw};
 
-	player() {};
+	class Game {
+		public:
+			Game(const Player& player1, const Player& player2);
 
-	~player() {};
+			GameState GetState() const;
+			const Player& GetCurrentPlayer() const;
+			bool MakeMove(const Move& move);
+			void Reset();
+		private:
+			Board board_;
+			Player player1_;
+			Player player2_;
+			Player current_player_;
+			GameState state_;
 
-private:
-};
-void gameloop();
+			void SwitchTurn();
+			void UpdateState(char symbol);
+	};
+}
+
+#endif // CORE_GAME_HPP_
