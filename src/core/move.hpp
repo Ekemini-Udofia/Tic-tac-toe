@@ -1,5 +1,5 @@
 #ifndef CORE_MOVE_HPP_
-#define OCRE_MOVE_HPP_
+#define CORE_MOVE_HPP_
 
 namespace core {
 
@@ -7,6 +7,8 @@ namespace core {
 		int row;
 		int col;
 		char symbol;
+
+		Move(int r, int c, char s) : row(r), col(c), symbol(s) {}
 	};
 }
 

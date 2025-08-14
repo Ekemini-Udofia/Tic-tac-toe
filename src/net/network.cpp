@@ -1,6 +1,3 @@
-#include <winsock.h>
-
-
 bool init_network()
 {
 	bool success = false;
@@ -10,11 +7,3 @@ bool init_network()
 
 	return success;
 }
-
-
-
-
-class player {
-	public:
-		bool is_turn;
-};

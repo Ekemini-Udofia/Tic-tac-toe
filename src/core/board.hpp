@@ -13,6 +13,8 @@ namespace core {
 		bool CheckWin(char symbol) const;
 		bool IsFull() const;
 		void Reset();
+
+		char GetCell(int row, int col) const;
 	private:
 		std::array<std::array<char, 3>, 3> grid_;
 	};

@@ -16,6 +16,9 @@ namespace core {
 			const Player& GetCurrentPlayer() const;
 			bool MakeMove(const Move& move);
 			void Reset();
+
+			const Board& board() const;
+
 		private:
 			Board board_;
 			Player player1_;

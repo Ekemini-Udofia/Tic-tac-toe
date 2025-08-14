@@ -76,5 +76,9 @@ namespace core {
 		}
 	}
 
+	char Board::GetCell(int row, int col) const {
+		if (row < 0 || row >= 3 || col < 0 || col >= 3) return kEmptyCell;
+		return grid_[row][col];
+	}
 
 } // namespace core
